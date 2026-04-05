@@ -1,0 +1,33 @@
+name: CD — Deploy to Staging
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  deploy-staging:
+    name: Build, Push & Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/flask-blog-devops
+          TAG=staging-${{ github.sha }}
+          docker build -t $IMAGE:$TAG .
+          docker push $IMAGE:$TAG
+          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Notify deployment result
+        if: always()
+        run: |
+          echo "Staging deployment status: ${{ job.status }} — $IMAGE_TAG"
