@@ -14,15 +14,17 @@ from flaskblog.models import User
 @pytest.fixture
 def app():
     app = create_app()
-    app.config.update({
-        "TESTING": True,
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "WTF_CSRF_ENABLED": False,
-        "SECRET_KEY": "test-secret-key",
-        "MAIL_SUPPRESS_SEND": True,
-        "MAIL_SERVER": "localhost",
-        "MAIL_PORT": 25,
-    })
+    app.config.update(
+        {
+            "TESTING": True,
+            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+            "WTF_CSRF_ENABLED": False,
+            "SECRET_KEY": "test-secret-key",
+            "MAIL_SUPPRESS_SEND": True,
+            "MAIL_SERVER": "localhost",
+            "MAIL_PORT": 25,
+        }
+    )
 
     with app.app_context():
         db.create_all()
