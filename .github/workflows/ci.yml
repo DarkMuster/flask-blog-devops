@@ -64,7 +64,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov email-validator python-dotenv
 
       - name: Run tests
         env:
