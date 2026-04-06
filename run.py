@@ -1,6 +1,9 @@
+import os
 from dotenv import load_dotenv
+
 load_dotenv()
-from flaskblog import create_app,db
+
+from flaskblog import create_app, db
 
 app = create_app()
 
