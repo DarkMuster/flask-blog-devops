@@ -21,11 +21,9 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE=ghcr.io/$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          TAG=staging-${{ github.sha }}
-          docker build -t $IMAGE:$TAG .
-          docker push $IMAGE:$TAG
-          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+          IMAGE=ghcr.io/$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')/flask-blog-devops
+          docker build -t $IMAGE:staging-${{ github.sha }} .
+          docker push $IMAGE:staging-${{ github.sha }}
 
       - name: Notify deployment result
         if: always()
