@@ -22,7 +22,7 @@ jobs:
         run: pip install flake8 black isort
 
       - name: Run flake8
-        run: flake8 . --max-line-length=120 --exclude=venv,migrations
+        run: flake8 .
 
       - name: Run black check
         run: black --check --line-length=120 .
@@ -64,7 +64,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov email-validator python-dotenv
 
       - name: Run tests
         env:
@@ -72,5 +72,5 @@ jobs:
           SQLALCHEMY_DATABASE_URI: sqlite:///test.db
           EMAIL_USER: test@test.com
           EMAIL_PASS: testpass
-        run: pytest tests/ --cov=flaskblog --cov-report=xml --cov-report=html
+        run: python -m pytest tests/ --cov=flaskblog --cov-report=xml --cov-report=html
 

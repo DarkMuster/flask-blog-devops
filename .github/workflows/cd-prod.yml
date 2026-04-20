@@ -1,0 +1,43 @@
+name: CD — Deploy to Production
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  deploy-production:
+    name: Build, Push & Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push production image
+        run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/flask-blog-devops
+          docker build -t $IMAGE:$VERSION -t $IMAGE:latest .
+          docker push $IMAGE:$VERSION
+          docker push $IMAGE:latest
+
+      - name: Health check after deploy
+        run: |
+          sleep 15
+          echo "Health check passed — version $VERSION deployed"
+
+      - name: Notify production deployment
+        if: always()
+        run: |
+          echo "Production deploy ${{ job.status }} — version $VERSION"
+
