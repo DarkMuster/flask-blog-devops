@@ -28,4 +28,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')" || exit 1
 
 EXPOSE 5000
-CMD ["gunicorn", "run:app", "--bind", "0.0.0.0:5000"]
+
+CMD gunicorn "flaskblog:create_app()" --bind 0.0.0.0:$PORT
