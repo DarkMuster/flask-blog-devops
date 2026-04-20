@@ -2,13 +2,15 @@ name: CD — Deploy to Staging
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   deploy-staging:
-    name: Build, Push & Deploy to Staging
     runs-on: ubuntu-latest
-    environment: staging
     steps:
       - uses: actions/checkout@v4
 
@@ -24,8 +26,3 @@ jobs:
           IMAGE=ghcr.io/$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')/flask-blog-devops
           docker build -t $IMAGE:staging-${{ github.sha }} .
           docker push $IMAGE:staging-${{ github.sha }}
-
-      - name: Notify deployment result
-        if: always()
-        run: |
-          echo "Staging deployment status: ${{ job.status }} — $IMAGE_TAG"
