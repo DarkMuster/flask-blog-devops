@@ -3,8 +3,8 @@ def test_home_page(client):
     assert response.status_code == 200
 
 
-def test_about_page(client):
-    response = client.get("/about")
+def test_health_page(client):
+    response = client.get("/health")
     assert response.status_code == 200
 
 
@@ -34,7 +34,9 @@ def test_register_user(client):
 
 def test_invalid_login(client):
     response = client.post(
-        "/login", data={"email": "wrong@test.com", "password": "wrongpassword"}, follow_redirects=True
+        "/login",
+        data={"email": "wrong@test.com", "password": "wrongpassword"},
+        follow_redirects=True,
     )
     assert response.status_code == 200
 

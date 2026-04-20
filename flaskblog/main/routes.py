@@ -17,6 +17,6 @@ def about():
     return render_template("about.html", title="About")
 
 
-@main.route('/health')
+@main.route("/health")
 def health():
-    return {'status': 'healthy'}, 200
+    return {"status": "healthy"}, 200
