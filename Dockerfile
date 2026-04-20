@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
-    pip install --user -r requirements.txt
+    pip install -r requirements.txt --target=/app/packages
 
 # Stage 2 — Production
 FROM python:3.11-slim AS production
@@ -17,7 +17,7 @@ RUN addgroup --system flask && \
     adduser --system --ingroup flask flask
 
 # Copy installed packages from builder
-COPY --from=builder /root/.local /home/flask/.local
+COPY --from=builder /app/packages /app/packages
 
 # Copy app code
 COPY . .
@@ -29,7 +29,7 @@ RUN chown -R flask:flask /app
 USER flask
 
 # Environment variables
-ENV PATH=/home/flask/.local/bin:$PATH
+ENV PYTHONPATH=/app/packages:$PYTHONPATH
 ENV FLASK_APP=run.py
 ENV FLASK_ENV=production
 
