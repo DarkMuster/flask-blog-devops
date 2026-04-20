@@ -72,5 +72,5 @@ jobs:
           SQLALCHEMY_DATABASE_URI: sqlite:///test.db
           EMAIL_USER: test@test.com
           EMAIL_PASS: testpass
-        run: pytest tests/ --cov=flaskblog --cov-report=xml --cov-report=html
+        run: python -m pytest tests/ --cov=flaskblog --cov-report=xml --cov-report=html
 
