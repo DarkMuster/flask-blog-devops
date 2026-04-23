@@ -27,6 +27,6 @@ ENV FLASK_ENV=production
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')" || exit 1
 
-EXPOSE 5000
+EXPOSE 8080
 
 CMD gunicorn "flaskblog:create_app()" --bind 0.0.0.0:$PORT
