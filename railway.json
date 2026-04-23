@@ -1,0 +1,12 @@
+{
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Dockerfile"
+  },
+  "deploy": {
+    "startCommand": "gunicorn 'flaskblog:create_app()' --bind 0.0.0.0:8080",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 60,
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
