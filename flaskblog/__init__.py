@@ -21,7 +21,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     metrics = PrometheusMetrics(app)
     try:
-        metrics.info('app_info', 'Flask Blog Application', version='1.0.0')
+        metrics.info("app_info", "Flask Blog Application", version="1.0.0")
     except ValueError:
         pass
     bcrypt.init_app(app)
