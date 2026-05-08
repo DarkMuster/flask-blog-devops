@@ -3,7 +3,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-
+from prometheus_flask_exporter import PrometheusMetrics
 from flaskblog.config import Config
 
 db = SQLAlchemy()
@@ -19,6 +19,8 @@ def create_app(config_class=Config):
     app.config.from_object(Config)
 
     db.init_app(app)
+    metrics = PrometheusMetrics(app)
+    metrics.info('app_info', 'Flask Blog Application', version='1.0.0')
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
